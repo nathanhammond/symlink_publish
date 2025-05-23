@@ -2,5 +2,10 @@
 name = "symlink_publish"
 version = "0.1.0"
 edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "A tool to create symlinks for Rust packages in a workspace"
+homepage = ""
+repository = ""
+
 
 [dependencies]
