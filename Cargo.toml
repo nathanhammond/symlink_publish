@@ -9,3 +9,4 @@ repository = "http://bing.com"
 
 
 [dependencies]
+git2 = "0.20.2"
