@@ -1,9 +1,22 @@
 use std::path::Path;
+use gix::features::progress;
 
 #[cfg(windows)]
 pub fn bytes2path(b: &[u8]) -> &std::path::Path {
     use std::str;
     std::path::Path::new(str::from_utf8(b).unwrap())
+}
+
+pub fn gitoxide(dir: &Path) -> bool {
+    let repo = gix::discover(dir).unwrap();
+    let status = repo.status(progress::Discard).unwrap();
+    status.into_index_worktree_iter(None).unwrap()
+        .for_each(|a| {
+            let item = a.unwrap();
+            println!("{:?}", item.rela_path());
+        });
+
+    return false;
 }
 
 pub fn is_dirty(dir: &Path) -> Result<Option<Vec<String>>, git2::Error> {
@@ -33,6 +46,11 @@ pub fn is_dirty(dir: &Path) -> Result<Option<Vec<String>>, git2::Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn check_gix() {
+        gitoxide(Path::new("."));
+    }
 
     #[test]
     fn check_upstream() {
